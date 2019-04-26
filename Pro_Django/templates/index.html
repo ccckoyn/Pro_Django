@@ -18,12 +18,13 @@
             <div style="color:red">{{ error }}</div>
               {% csrf_token %}
             <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button><br>
-              <p>暂未开放注册，请联系系统管理员申请账号.</p>
-              <hr>
-              {% block beian %}
-              <p style="padding-left: 30px;padding-right: 10px;">©<a href="http://www.bbdservice.com" target="_blank">BBD</a> 测试部 All Right Reserved 2019</p>
-              {% endblock %}
+            <p>暂未开放注册，请联系系统管理员申请账号.</p>
+            <hr>
+            <p style="padding-left: 30px;padding-right: 10px;">©<a href="http://www.bbdservice.com" target="_blank">BBD</a> 测试部 All Right Reserved 2019</p>
           </form>
+
+              {% block beian %}
+              {% endblock %}
         </div>
 
 {% endblock  %}

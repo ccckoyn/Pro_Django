@@ -67,67 +67,64 @@
               <div class="form-group">
                 <input type="text" id="req_url" class="form-control" placeholder="Enter request URL" style="width: 1330px">
               </div>&nbsp&nbsp
-              <button  id="send" type="button" class="btn btn-primary" onclick="myFunction()">发送</button>&nbsp&nbsp
-              <button id="save" type="button" class="btn btn-primary">保存</button>
+              <button  id="send" type="submit" class="btn btn-success" onclick="myFunction()">发送</button>&nbsp&nbsp
+              <button id="save" type="submit" class="btn btn-warning">保存</button>
             </form>
-            <br>
-            <div class="input-group">
-                <span class="input-group-addon">headers</span>
-                <input id="headers" type="text" class="form-control" placeholder="headers">
-            </div>
 
-            <div style="margin-top: 10px;">
-                <label>* 参数类型：</label>
-                <label class="radio-inline">
-                    <input type="radio" name="par_type" id="from" value="form-data" checked> form-data
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="par_type" id="json" value="json"> JSON
-                </label>
-            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon">参数</span>
-{#                <input id="parameter" type="text" class="form-control" style="height: 94px;text-align: left;">#}
-            <textarea id="parameter" class="form-control" rows="10" name=textarea></textarea>
-        </div>
-        <p style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
-        <div style="margin-top: 15px;">
-            <label>返回结果：</label>
-            <textarea id="result" class="form-control" rows="10" name=textarea value="readonly" readonly></textarea>
-        </div>
+<!--POSTMAN模块暂未开发-->
+<h5 class="page-header"></h5>
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Params</a></li>
+  <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">Headers</a></li>
+  <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">Body</a></li>
+  <li role="presentation"><a href="#settings" role="tab" data-toggle="tab">Tests</a></li>
+</ul>
 
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="home">
+      <span>Query Params</span>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="profile">
+      <span>Headers</span>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="messages">
+      <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> none
+      </label>
+      <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> form-data
+      </label>
+      <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> x-www-form-urlencoded
+      </label>
+      <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> raw
+      </label>
+      <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> binary
+      </label>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="settings"><h2>暂未开发，请等待.......</h2></div>
+    </div>
 
     {% endif %}
 </div>
-<script type="text/javascript">
-    function myFunction(){
-        var url = $("#req_url").val();
-        var method = $("#AreaId").val();
-        var header = $("#header").val();
-        var type = $('input:radio:checked').val();
-        var parameter = $("#parameter").val();
-        if(url == ""){
-            window.alert("Request url is empty!!!");
-            return;
-        }
-        $.post("/CaseManage/debug/",
-            {
-                url:url,
-                method:method,
-                header:header,
-                type:type,
-                parameter:parameter,
-            },
-            function (data,status) {
-                /*
-                alert("数据：" + data.result);
-                console.log("返回结果",data.result);*/
-                document.querySelector("#result").value = data.result;
-            }
-        );
-    };
-
-</script>
+{#<script type="text/javascript">#}
+{#    function myFunction(){#}
+{#        var url = $("#req_url").val();#}
+{#        var method = $("#AreaId").val();#}
+{#        var header = $("#header").val();#}
+{#        var type = $('input:radio:checked').val();#}
+{#        var parameter = $("#parameter").val();#}
+{#        if(url == ""){#}
+{#            window.alert("Request url is empty!!!");#}
+{#            return;#}
+{#        }#}
+{#        window.alert("parameter:"+parameter);#}
+{#    }#}
+{##}
+{#</script>#}
 {% endblock %}
 

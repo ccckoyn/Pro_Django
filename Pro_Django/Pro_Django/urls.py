@@ -33,5 +33,8 @@ urlpatterns = [
     #模块管理
     path('MolManage/',include("module_app.urls")),
 
+    #用例管理
+    path('CaseManage/',include("testcase_app.urls")),
+
 
 ]

@@ -9,22 +9,23 @@
     <link href="/static/css/style.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://v3.bootcss.com/examples/dashboard/dashboard.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
   </head>
 
-  <body style="overflow:-Scroll;overflow-x:hidden">
+  <body style="overflow:-Scroll;overflow-x:hidden;overflow-y:hidden">
 
     {% block content %}
 
     {% endblock %}
     {% block beian %}
-    <div class="container theme-showcase" role="main" style="text-align: center;margin-left: 320px;margin-right: 310px;width: 1580px;padding-top: 500px;">
-        <div class="page-header"></div>
-        <footer class="footer">
-            <p style="padding-left: 30px;padding-right: 10px;">©<a href="http://www.bbdservice.com" target="_blank">BBD</a> 测试部 All Right Reserved 2019 Author:刘德全</p>
+        <footer class="navbar-fixed-bottom">
+        <div class="page-header" style="width: 1570px;margin-left: 300px;"></div>
+            <div class="container">
+                <p class="text-center" style="padding-left: 30px;padding-right: 10px;">©<a href="http://www.bbdservice.com" target="_blank">BBD</a> 测试部 All Right Reserved 2019 Author:刘德全</p>
+            </div>
         </footer>
     </div>
     {% endblock %}
