@@ -6,7 +6,8 @@ urlpatterns = [
 
     # 测试用例管理
     path('', views.CaseManage, name="CaseManage"),
-    path('debug/',views.debug, name="debug"),
+    path('debugFun/',views.debugFun, name="debugFun"),
+    path('assertFun/',views.assertFun, name="assertFun")
 
 
 ]

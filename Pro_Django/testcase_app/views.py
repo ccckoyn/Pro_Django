@@ -4,6 +4,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
+
 import requests,json
 
 @login_required
@@ -14,7 +15,7 @@ def CaseManage(request):
 
 @csrf_exempt
 @login_required
-def debug(request):
+def debugFun(request):
     if request.method == "POST":
         del_parameter = ""
         del_headers = ""
@@ -67,8 +68,27 @@ def debug(request):
     else:
         return JsonResponse({"result":"请求方法错误"})
 
+@csrf_exempt
+@login_required
+def assertFun(request):
+    if request.method == "POST":
+       result = request.POST.get("result","")
+       assert_content = request.POST.get("assert_res","")
+       assert_type = request.POST.get("assert_type","")
+       if result == "" or assert_content == "":
+           return JsonResponse({"result":"返回结果或断言内容为空，不符合断言要求，请调整"})
+       if assert_type == "include":
+           if assert_content.strip() in result.strip():
+               return JsonResponse({"result":"断言成功"})
+           else:
+               return JsonResponse({"result": "断言失败"})
+       if assert_type == "equals":
+           if assert_content.strip() == result.strip():
+               return JsonResponse({"result":"断言成功"})
+           else:
+               return JsonResponse({"result": "断言失败"})
 
-
-
+    else:
+        return JsonResponse({"result":"请求方法错误"})
 # Create your views here.
 

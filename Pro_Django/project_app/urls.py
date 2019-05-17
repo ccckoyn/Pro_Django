@@ -9,5 +9,5 @@ urlpatterns = [
     path('createProject/', views.createProject, name="createProject"),
     path('editProject/<int:pid>/', views.editProject, name="editProject"),
     path('deleteProject/<int:pid>/', views.deleteProject, name="deleteProject"),
-
+    path('getProjectList/', views.getProjectList, name="getProjectList"),
 ]

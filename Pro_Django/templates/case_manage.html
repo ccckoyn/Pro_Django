@@ -52,7 +52,7 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 1650px; margin-left: 280px;">
         <!--模块列表-->
         {% if type == "debug" %}
-          <h4 class="sub-header">POSTMAN
+          <h4 class="sub-header">测试用例调试
 
           </h4>
             <form class="form-inline">
@@ -67,8 +67,8 @@
               <div class="form-group">
                 <input type="text" id="req_url" class="form-control" placeholder="Enter request URL" style="width: 1330px">
               </div>&nbsp&nbsp
-              <button  id="send" type="button" class="btn btn-primary" onclick="myFunction()">发送</button>&nbsp&nbsp
-              <button id="save" type="button" class="btn btn-primary">保存</button>
+              <button  id="send_btn" type="button" class="btn btn-success" onclick="sendFunction()">发送</button>&nbsp&nbsp
+              <button id="save_btn" type="button" class="btn btn-warning">保存</button>
             </form>
             <br>
             <div class="input-group">
@@ -89,29 +89,66 @@
         <div class="input-group">
             <span class="input-group-addon">参数</span>
 {#                <input id="parameter" type="text" class="form-control" style="height: 94px;text-align: left;">#}
-            <textarea id="parameter" class="form-control" rows="10" name=textarea></textarea>
+            <textarea id="parameter" class="form-control" rows="10" name=textarea style="height: 164px;" placeholder='说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}'></textarea>
         </div>
-        <p style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
         <div style="margin-top: 15px;">
             <label>返回结果：</label>
-            <textarea id="result" class="form-control" rows="10" name=textarea value="readonly" readonly></textarea>
+            <textarea id="result" class="form-control" rows="10" name=textarea value="readonly" readonly style="height: 164px;"></textarea>
+        </div>
+
+         <div style="margin-top: 10px;">
+            <label>响应断言：</label>
+             <label class="radio-inline">
+                 <input type="radio" name="assert_type" id="includes" value="include" checked> 包括
+             </label>
+             <label class="radio-inline">
+                 <input type="radio" name="assert_type" id="equals" value="equals"> 相等
+             </label>
+            <button  id="assert_btn" type="button" class="btn btn-success" onclick="assertFunction()" style="margin-left: 1325px;">断言</button><br>
+            <textarea id="assert_content" class="form-control" rows="10" name=textarea style="height: 164px;"></textarea>
+        </div>
+
+        <div style="margin-top: 5px;">
+            <label>项目:&nbsp&nbsp&nbsp&nbsp</label>
+            <select class="selectpicker" id="project_name">
+                <option value="0">选择项目</option>
+            </select>
+
+            <label style="margin-left: 500px;">模块:&nbsp&nbsp&nbsp&nbsp</label>
+            <select class="selectpicker" id="module_name">
+                <option value="0">选择模块</option>
+            </select>
         </div>
 
 
     {% endif %}
 </div>
 <script type="text/javascript">
-    function myFunction(){
+
+    //获取项目的初始化
+    ProjectInit("project_name")
+
+    //监听项目列表的变化
+    $("#project_name").change(function(){
+        //window.alert("项目变化了");
+        let selected = $(this).children("option:selected").val();
+        ModuleInit("module_name", selected);
+        //console.log(selected);
+    })
+
+
+    //发送方法
+    function sendFunction(){
         var url = $("#req_url").val();
         var method = $("#AreaId").val();
         var header = $("#header").val();
-        var type = $('input:radio:checked').val();
+        var type = $('input[name="par_type"]:checked').val();
         var parameter = $("#parameter").val();
         if(url == ""){
             window.alert("Request url is empty!!!");
             return;
         }
-        $.post("/CaseManage/debug/",
+        $.post("/CaseManage/debugFun/",
             {
                 url:url,
                 method:method,
@@ -127,6 +164,32 @@
             }
         );
     };
+
+    //断言方法
+    function assertFunction() {
+        var result = $("#result").val();
+        var assert_res = $("#assert_content").val();
+        var assert_type = $('input[name="assert_type"]:checked').val();
+        //console.log("实际结果", result);
+        //console.log("断言结果", assert_res);
+        if(result == "" || assert_res == ""){
+            window.alert("返回结果或断言内容为空，不符合断言要求，请调整");
+            return;
+        }
+        $.post("/CaseManage/assertFun/",
+            {
+                result:result,
+                assert_res:assert_res,
+                assert_type:assert_type,
+
+            },
+            function(data,status){
+                alert("数据：" + data.result);
+                console.log("返回结果", data.result);
+            });
+    };
+
+
 
 </script>
 {% endblock %}

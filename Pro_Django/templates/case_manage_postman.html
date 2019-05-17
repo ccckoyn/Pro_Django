@@ -85,6 +85,22 @@
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane active" id="home">
       <span>Query Params</span>
+      <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-hover" id="table">
+                <thead>
+                    <tr data-tabullet-map="id">
+                        <th width="50" data-tabullet-map="_index" data-tabullet-readonly="true">No</th>
+                        <th data-tabullet-map="name">Key</th>
+                        <th data-tabullet-map="level">Value</th>
+                        <th width="50" data-tabullet-type="edit"></th>
+                        <th width="50" data-tabullet-type="delete"></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+      </div>
+
   </div>
   <div role="tabpanel" class="tab-pane" id="profile">
       <span>Headers</span>
@@ -107,24 +123,51 @@
       </label>
   </div>
   <div role="tabpanel" class="tab-pane" id="settings"><h2>暂未开发，请等待.......</h2></div>
-    </div>
+</div>
+
+<script src="/static/js/Tabullet.js"></script>
+
+
+    <script type="text/javascript">
+
+    $(function() {
+        var source = [];
+
+        function resetTabullet() {
+            $("#table").tabullet({
+                data: source,
+                action: function(mode, data) {
+                    console.dir(mode);
+                    if (mode === 'save') {
+                        source.push(data);
+                    }
+                    if (mode === 'edit') {
+                        for (var i = 0; i < source.length; i++) {
+                            if (source[i].id == data.id) {
+                                source[i] = data;
+                            }
+                        }
+                    }
+                    if (mode == 'delete') {
+                        for (var i = 0; i < source.length; i++) {
+                            if (source[i].id == data) {
+                                source.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+                    resetTabullet();
+                }
+            });
+        }
+
+        resetTabullet();
+    });
+    </script>
 
     {% endif %}
 </div>
-{#<script type="text/javascript">#}
-{#    function myFunction(){#}
-{#        var url = $("#req_url").val();#}
-{#        var method = $("#AreaId").val();#}
-{#        var header = $("#header").val();#}
-{#        var type = $('input:radio:checked').val();#}
-{#        var parameter = $("#parameter").val();#}
-{#        if(url == ""){#}
-{#            window.alert("Request url is empty!!!");#}
-{#            return;#}
-{#        }#}
-{#        window.alert("parameter:"+parameter);#}
-{#    }#}
-{##}
-{#</script>#}
+
+
 {% endblock %}
 

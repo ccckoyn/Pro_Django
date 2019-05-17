@@ -22,8 +22,8 @@ def index(request):
     else:
         username = request.POST.get("username", "")
         password = request.POST.get("password", "")
-        print(username)
-        print(password)
+        # print(username)
+        # print(password)
         if username == "" and password != "":
             return render(request, "index.html", {"error": "用户名不能为空，请输入用户名"})
         if username != "" and password == "":

@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # from ..models.project import Project
 from project_app.models import Project
 from project_app.forms import ProjectForm
+from comm.paginator_disp_nums import get_pages
 
 
 #登录成功，默认项目管理页面
@@ -15,7 +16,7 @@ def ProManage(request):
     登录成功，项目管理页面
     """
     project_all = Project.objects.all()
-    paginator = Paginator(project_all,4)
+    paginator = Paginator(project_all,10)
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -83,5 +84,19 @@ def deleteProject(request,pid):
     pro.delete()
     return HttpResponseRedirect("/ProManage/")
 
-
+#在创建测试用例中获取项目列表
+@login_required
+def getProjectList(request):
+    if request.method == "GET":
+        projects = Project.objects.all()
+        projects_list = []
+        for pro in projects:
+            project_dict = {
+                "id": pro.id,
+                "name": pro.name
+            }
+            projects_list.append(project_dict)
+        return JsonResponse({"status":10200,"message":"请求成功","data": projects_list})
+    else:
+        return JsonResponse({"status":10201,"message":"请求失败"})
 # Create your views here.

@@ -1,12 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from ..models.project import Project
 from module_app.models import Module
-from project_app.models import Project
 from module_app.forms import ModuleForm
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
@@ -16,7 +15,15 @@ def MolManage(request):
     """
     if request.method == "GET":
         modules_all = Module.objects.all()
-        return render(request, "module_manage.html", {"modules":modules_all, "type": "list"})
+        paginator = Paginator(modules_all, 10)
+        page = request.GET.get('page')
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            contacts = paginator.page(1)
+        except EmptyPage:
+            contacts = paginator.page(paginator.num_pages)
+        return render(request, "module_manage.html", {"modules":modules_all, "type": "list", "contacts": contacts, "paginator": paginator})
 
 # 创建模块
 @login_required
@@ -86,5 +93,26 @@ def deleteModule(request,pid):
     pro = Module.objects.get(id=pid)
     pro.delete()
     return HttpResponseRedirect("/MolManage/")
+
+
+#在创建测试用例中,根据项目ID返回对应的模块列表
+@csrf_exempt
+@login_required
+def getModuleList(request):
+    if request.method == "POST":
+        pid = request.POST.get("pid","")
+        if pid == "":
+            return JsonResponse({"status":102012,"message":"项目为空，请创建项目"})
+        modules = Module.objects.filter(project=int(pid))
+        modules_list = []
+        for mod in modules:
+            modules_dict = {
+                "id": mod.id,
+                "name": mod.name
+            }
+            modules_list.append(modules_dict)
+        return JsonResponse({"status":10200,"message":"请求成功","data": modules_list})
+    else:
+        return JsonResponse({"status":10201,"message":"请求失败"})
 # Create your views here.
 
