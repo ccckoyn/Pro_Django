@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">接口测试平台</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">设置</a></li>
+        <li><a href="/logout/">退出</a></li>
+      </ul>
+      <form class="navbar-form navbar-right">
+        <input type="text" class="form-control" placeholder="Search...">
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar" style="width: 261px;">
+      <ul class="nav nav-sidebar">
+        <li><a href="/ProManage/">
+            <i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理</a></li>
+
+        <li><a href="/MolManage/">
+            <i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理</a></li>
+
+        <li class="active"><a href="/CaseManage/">
+            <i class="glyphicon glyphicon-list"></i>&nbsp&nbsp用例管理</a></li>
+
+        <li><a href="/TaskManage/">
+            <i class="glyphicon glyphicon-tasks"></i>&nbsp&nbsp任务管理</a></li>
+
+        <li><a href="/MockServer/">
+            <i class="glyphicon glyphicon-modal-window"></i>&nbsp&nbspMock Server</a></li>
+
+        <li><a href="/TestTool/">
+            <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 1650px; margin-left: 280px;">
+        <!--测试用例调试-->
+          <h4 class="sub-header">测试用例调试与编辑</h4>
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">用例名称</span>
+              <input type="text" id="case_name" class="form-control" aria-describedby="basic-addon1">
+            </div><br>
+            <form class="form-inline">
+              <div class="form-group">
+                  <select id="AreaId" name="AreaId" class="form-control">
+                        <option value="get">GET</option>
+                        <option value="post">POST</option>
+                        <option value="put">PUT</option>
+                        <option value="delete">DELETE</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                <input type="text" id="req_url" class="form-control" placeholder="Enter request URL" style="width: 1330px">
+              </div>&nbsp&nbsp
+              <button  id="send_btn" type="button" class="btn btn-success" onclick="sendFunction()" style="margin-left: 60px;">发送</button>
+
+            </form>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">headers</span>
+                <input id="headers" type="text" class="form-control" placeholder="headers">
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label>* 参数类型：</label>
+                <label class="radio-inline">
+                    <input type="radio" name="par_type" id="from" value="form-data" checked> form-data
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="par_type" id="json" value="json"> JSON
+                </label>
+            </div>
+
+        <div class="input-group">
+            <span class="input-group-addon">参数</span>
+{#                <input id="parameter" type="text" class="form-control" style="height: 94px;text-align: left;">#}
+            <textarea id="parameter" class="form-control" rows="10" name=textarea style="height: 164px;" placeholder='说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}'></textarea>
+        </div>
+        <div style="margin-top: 15px;">
+            <label>返回结果：</label>
+            <textarea id="result" class="form-control" rows="10" name=textarea value="readonly" readonly style="height: 164px;"></textarea>
+        </div>
+
+         <div style="margin-top: 10px;">
+            <label>响应断言：</label>
+             <label class="radio-inline">
+                 <input type="radio" name="assert_type" id="include" value="include" checked> 包括
+             </label>
+             <label class="radio-inline">
+                 <input type="radio" name="assert_type" id="equal" value="equal"> 相等
+             </label>
+            <button  id="assert_btn" type="button" class="btn btn-success" onclick="assertFunction()" style="margin-left: 1325px;">断言</button><br>
+            <textarea id="assert_content" class="form-control" rows="10" name=textarea style="height: 164px;"></textarea>
+        </div>
+
+        <div style="margin-top: 5px;">
+            <label>项目:&nbsp&nbsp&nbsp&nbsp</label>
+            <select class="selectpicker" id="project_name">
+                <option value="0">选择项目</option>
+            </select>
+
+            <label style="margin-left: 500px;">模块:&nbsp&nbsp&nbsp&nbsp</label>
+            <select class="selectpicker" id="module_name">
+                <option value="0">选择模块</option>
+            </select>
+            <button id="save_btn" type="button" class="btn btn-warning" onclick="saveFunction()" style="margin-left: 460px;">保存</button>
+        </div>
+
+</div>
+<script type="text/javascript">
+
+    //获取项目的初始化
+    ProjectInit("project_name")
+
+    //监听项目列表的变化
+    $("#project_name").change(function(){
+        //window.alert("项目变化了");
+        let selected = $(this).children("option:selected").val();
+        ModuleInit("module_name", selected);
+        //console.log(selected);
+    })
+
+
+    //发送方法
+    function sendFunction(){
+        var url = $("#req_url").val();
+        var method = $("#AreaId").val();
+        var header = $("#header").val();
+        var type = $('input[name="par_type"]:checked').val();
+        var parameter = $("#parameter").val();
+        if(url == ""){
+            window.alert("Request url is empty!!!");
+            return;
+        }
+        $.post("/CaseManage/debugFun/",
+            {
+                url:url,
+                method:method,
+                header:header,
+                type:type,
+                parameter:parameter,
+            },
+            function (data,status) {
+                /*
+                alert("数据：" + data.result);
+                console.log("返回结果",data.result);*/
+                document.querySelector("#result").value = data.result;
+            }
+        );
+    };
+
+    //断言方法
+    function assertFunction() {
+        var result = $("#result").val();
+        var assert_res = $("#assert_content").val();
+        var assert_type = $('input[name="assert_type"]:checked').val();
+        //console.log("实际结果", result);
+        //console.log("断言结果", assert_res);
+        if(result == "" || assert_res == ""){
+            window.alert("返回结果或断言内容为空，不符合断言要求，请调整");
+            return;
+        }
+        $.post("/CaseManage/assertFun/",
+            {
+                result:result,
+                assert_res:assert_res,
+                assert_type:assert_type,
+
+            },
+            function(data,status){
+                alert("数据：" + data.result);
+                console.log("返回结果", data.result);
+            });
+    };
+
+    //保存用例
+    function saveFunction(){
+
+        //接口基本信息
+        var url = $("#req_url").val();
+        var method = $("#AreaId").val();
+        var header = $("#header").val();
+        var type = $('input[name="par_type"]:checked').val();
+        var parameter = $("#parameter").val();
+
+        //断言数据
+        var assert_res = $("#assert_content").val();
+        var assert_type = $('input[name="assert_type"]:checked').val();
+
+        //用例其他信息
+        var module_id = $('select[id="module_name"]').val();
+        var project_id = $('select[id="project_name"]').val();
+        var case_name = $("#case_name").val();
+
+        if(case_name == ""){
+            window.alert("测试用例名称不能为空!");
+
+            return;
+        }else if(url == ""){
+            window.alert("Request url is empty!!!");
+            return;
+        }else if(project_id == "0"){
+            window.alert("请选择项目!");
+            return;
+        }else if(module_id == "0"){
+            window.alert("请选择模块!");
+            return;
+        }else if(assert_res == ""){
+            window.alert("断言内容不能为空!");
+            return;
+        }
+        $.post("/CaseManage/saveCase/",
+            {
+                //接口基本信息
+                url:url,
+                method:method,
+                header:header,
+                type:type,
+                parameter:parameter,
+
+                //断言信息
+                assert_res:assert_res,
+                assert_type:assert_type,
+
+                //接口其他信息
+                case_name:case_name,
+                module_id:module_id,
+
+            },
+            function (data) {
+                window.alert(data.message);
+            }
+        );
+    };
+
+
+</script>
+{% endblock %}
+

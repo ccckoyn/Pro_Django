@@ -46,7 +46,7 @@ def CaseManage(request):
     """
     登录成功，管理页面
     """
-    return render(request, "case_manage.html")
+    return render(request, "case_debug.html")
 
 #登录成功，任务管理
 @login_required

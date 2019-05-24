@@ -61,7 +61,7 @@ def createModule(request):
 @login_required
 def editModule(request,pid):
     """
-    编辑项目
+    编辑模块
     :param request: 
     :return: 
     """
@@ -86,7 +86,7 @@ def editModule(request,pid):
 @login_required
 def deleteModule(request,pid):
     """
-    删除项目
+    删除模块
     :param request: 
     :return: 
     """
@@ -102,7 +102,7 @@ def getModuleList(request):
     if request.method == "POST":
         pid = request.POST.get("pid","")
         if pid == "":
-            return JsonResponse({"status":102012,"message":"项目为空，请创建项目"})
+            return JsonResponse({"status":10202,"message":"项目为空，请创建项目"})
         modules = Module.objects.filter(project=int(pid))
         modules_list = []
         for mod in modules:

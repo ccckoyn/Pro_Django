@@ -1,196 +1,149 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">接口测试平台</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">设置</a></li>
-        <li><a href="/logout/">退出</a></li>
-      </ul>
-      <form class="navbar-form navbar-right">
-        <input type="text" class="form-control" placeholder="Search...">
-      </form>
-    </div>
-  </div>
-</nav>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">接口测试平台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">设置</a></li>
+            <li><a href="/logout/">退出</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-3 col-md-2 sidebar" style="width: 261px;">
-      <ul class="nav nav-sidebar">
-        <li><a href="/ProManage/">
-            <i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理</a></li>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar" style="width: 261px;">
+          <ul class="nav nav-sidebar">
+            <li><a href="/ProManage/">
+                <i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理</a></li>
 
-        <li><a href="/MolManage/">
-            <i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理</a></li>
+            <li><a href="/MolManage/">
+                <i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理</a></li>
 
-        <li class="active"><a href="/CaseManage/">
-            <i class="glyphicon glyphicon-list"></i>&nbsp&nbsp用例管理</a></li>
+            <li  class="active"><a href="/CaseManage/">
+                <i class="glyphicon glyphicon-list"></i>&nbsp&nbsp用例管理</a>
 
-        <li><a href="/TaskManage/">
-            <i class="glyphicon glyphicon-tasks"></i>&nbsp&nbsp任务管理</a></li>
+            </li>
 
-        <li><a href="/MockServer/">
-            <i class="glyphicon glyphicon-modal-window"></i>&nbsp&nbspMock Server</a></li>
+            <li><a href="/TaskManage/">
+                <i class="glyphicon glyphicon-tasks"></i>&nbsp&nbsp任务管理</a></li>
 
-        <li><a href="/TestTool/">
-            <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 1650px; margin-left: 280px;">
-        <!--模块列表-->
-        {% if type == "debug" %}
-          <h4 class="sub-header">测试用例调试
+            <li><a href="/MockServer/">
+                <i class="glyphicon glyphicon-modal-window"></i>&nbsp&nbspMock Server</a></li>
 
-          </h4>
-            <form class="form-inline">
-              <div class="form-group">
-                  <select id="AreaId" name="AreaId" class="form-control">
-                        <option value="get">GET</option>
-                        <option value="post">POST</option>
-                        <option value="put">PUT</option>
-                        <option value="delete">DELETE</option>
-                  </select>
+            <li><a href="/TestTool/">
+                <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 1650px; margin-left: 280px;">
+{#          <h1 class="page-header">Dashboard</h1>#}
+{##}
+{#          <div class="row placeholders">#}
+{#            <div class="col-xs-6 col-sm-3 placeholder">#}
+{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
+{#              <h4>Label</h4>#}
+{#              <span class="text-muted">Something else</span>#}
+{#            </div>#}
+{#            <div class="col-xs-6 col-sm-3 placeholder">#}
+{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
+{#              <h4>Label</h4>#}
+{#              <span class="text-muted">Something else</span>#}
+{#            </div>#}
+{#            <div class="col-xs-6 col-sm-3 placeholder">#}
+{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
+{#              <h4>Label</h4>#}
+{#              <span class="text-muted">Something else</span>#}
+{#            </div>#}
+{#            <div class="col-xs-6 col-sm-3 placeholder">#}
+{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
+{#              <h4>Label</h4>#}
+{#              <span class="text-muted">Something else</span>#}
+{#            </div>#}
+{#          </div>#}
+
+            <!--用例列表-->
+              <h4 class="sub-header">测试用例
+                  <a href="/CaseManage/debugCase/">
+                      <button type="button" class="btn btn-sm btn-primary"  style="float:right;">
+                      <i class="glyphicon glyphicon-plus"></i>&nbsp&nbsp调试/创建测试用例 </button></a>
+              </h4>
+              <div class="table-responsive">
+                <table class="table table-striped">
+
+                  <thead>
+                    <tr>
+                      <th>序号</th>
+                      <th>用例名称</th>
+                      <th>请求方式</th>
+                      <th>所属模块</th>
+                      <th>创建时间</th>
+                      <!--<th>更新时间</th>-->
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for case in testcases %}
+                        <tr>
+                          <td>{{case.id}}</td>
+                          <td>{{case.name}}</td>
+                          <td>{{case.method}}</td>
+                          <td>{{case.module}}</td>
+                          <td>{{case.create_time|date:"Y-m-d H:i:s"}}</td>
+                          <td>
+                              <a href="/CaseManage/editCase/{{case.id}}/">
+                                  <i class="glyphicon glyphicon-edit"></i>&nbsp编辑</a>
+                              <a href="/CaseManage/deleteCase/{{case.id}}/" style="padding-left: 10px;">
+                                  <i class="glyphicon glyphicon-trash"></i>&nbsp删除</a>
+                          </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
-              <div class="form-group">
-                <input type="text" id="req_url" class="form-control" placeholder="Enter request URL" style="width: 1330px">
-              </div>&nbsp&nbsp
-              <button  id="send_btn" type="button" class="btn btn-success" onclick="sendFunction()">发送</button>&nbsp&nbsp
-              <button id="save_btn" type="button" class="btn btn-warning">保存</button>
-            </form>
-            <br>
-            <div class="input-group">
-                <span class="input-group-addon">headers</span>
-                <input id="headers" type="text" class="form-control" placeholder="headers">
-            </div>
 
-            <div style="margin-top: 10px;">
-                <label>* 参数类型：</label>
-                <label class="radio-inline">
-                    <input type="radio" name="par_type" id="from" value="form-data" checked> form-data
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="par_type" id="json" value="json"> JSON
-                </label>
-            </div>
+            <ul class="pagination" id="pager" style="padding-left: 1300px;">
 
-        <div class="input-group">
-            <span class="input-group-addon">参数</span>
-{#                <input id="parameter" type="text" class="form-control" style="height: 94px;text-align: left;">#}
-            <textarea id="parameter" class="form-control" rows="10" name=textarea style="height: 164px;" placeholder='说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}'></textarea>
+                {% if contacts.has_previous %}
+                    <li class="previous"><a href="/?page={{ contacts.previous_page_number }}">上一页</a></li>
+                {% else %}
+                    <li class="previous disabled"><a href="#">&laquo;上一页</a></li>
+                {% endif %}
+
+                {% for num in paginator.page_range %}
+                    {% if num == currentPage %}
+                        <li class="item active"><a href="/?page={{ num }}">{{ num }}</a></li>
+                    {% else %}
+                        <li class="item"><a href="/?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if book_list.has_next %}
+                    <li class="next"><a href="/?page={{ contacts.next_page_number }}">下一页&raquo;</a></li>
+                {% else %}
+                    <li class="next disabled"><a href="#">下一页&raquo;</a></li>
+                {% endif %}
+            </ul>
+
+
         </div>
-        <div style="margin-top: 15px;">
-            <label>返回结果：</label>
-            <textarea id="result" class="form-control" rows="10" name=textarea value="readonly" readonly style="height: 164px;"></textarea>
-        </div>
-
-         <div style="margin-top: 10px;">
-            <label>响应断言：</label>
-             <label class="radio-inline">
-                 <input type="radio" name="assert_type" id="includes" value="include" checked> 包括
-             </label>
-             <label class="radio-inline">
-                 <input type="radio" name="assert_type" id="equals" value="equals"> 相等
-             </label>
-            <button  id="assert_btn" type="button" class="btn btn-success" onclick="assertFunction()" style="margin-left: 1325px;">断言</button><br>
-            <textarea id="assert_content" class="form-control" rows="10" name=textarea style="height: 164px;"></textarea>
-        </div>
-
-        <div style="margin-top: 5px;">
-            <label>项目:&nbsp&nbsp&nbsp&nbsp</label>
-            <select class="selectpicker" id="project_name">
-                <option value="0">选择项目</option>
-            </select>
-
-            <label style="margin-left: 500px;">模块:&nbsp&nbsp&nbsp&nbsp</label>
-            <select class="selectpicker" id="module_name">
-                <option value="0">选择模块</option>
-            </select>
-        </div>
-
-
-    {% endif %}
-</div>
-<script type="text/javascript">
-
-    //获取项目的初始化
-    ProjectInit("project_name")
-
-    //监听项目列表的变化
-    $("#project_name").change(function(){
-        //window.alert("项目变化了");
-        let selected = $(this).children("option:selected").val();
-        ModuleInit("module_name", selected);
-        //console.log(selected);
-    })
-
-
-    //发送方法
-    function sendFunction(){
-        var url = $("#req_url").val();
-        var method = $("#AreaId").val();
-        var header = $("#header").val();
-        var type = $('input[name="par_type"]:checked').val();
-        var parameter = $("#parameter").val();
-        if(url == ""){
-            window.alert("Request url is empty!!!");
-            return;
-        }
-        $.post("/CaseManage/debugFun/",
-            {
-                url:url,
-                method:method,
-                header:header,
-                type:type,
-                parameter:parameter,
-            },
-            function (data,status) {
-                /*
-                alert("数据：" + data.result);
-                console.log("返回结果",data.result);*/
-                document.querySelector("#result").value = data.result;
-            }
-        );
-    };
-
-    //断言方法
-    function assertFunction() {
-        var result = $("#result").val();
-        var assert_res = $("#assert_content").val();
-        var assert_type = $('input[name="assert_type"]:checked').val();
-        //console.log("实际结果", result);
-        //console.log("断言结果", assert_res);
-        if(result == "" || assert_res == ""){
-            window.alert("返回结果或断言内容为空，不符合断言要求，请调整");
-            return;
-        }
-        $.post("/CaseManage/assertFun/",
-            {
-                result:result,
-                assert_res:assert_res,
-                assert_type:assert_type,
-
-            },
-            function(data,status){
-                alert("数据：" + data.result);
-                console.log("返回结果", data.result);
-            });
-    };
+      </div>
+    </div>
 
 
 
-</script>
 {% endblock %}
 

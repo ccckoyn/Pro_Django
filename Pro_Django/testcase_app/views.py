@@ -1,17 +1,52 @@
+# coding=utf-8
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
-
+from testcase_app.models import TestCase
+from module_app.models import Module
+from project_app.models import Project
 import requests,json
 
+@csrf_exempt
 @login_required
 def CaseManage(request):
+    """用例列表"""
     # return render(request, "test.html")
     # return render(request, "case_manage_postman.html", {"type": "debug"})
-    return render(request,"case_manage.html",{"type":"debug"})
+
+    case_all = TestCase.objects.all()
+
+    return render(request, "case_manage.html",{"testcases":case_all})
+
+
+
+@csrf_exempt
+@login_required
+def debugCase(request):
+
+    """添加用例"""
+
+    return render(request, "case_debug.html")
+
+@csrf_exempt
+@login_required
+def editCase(request, cid):
+
+    """编辑用例"""
+
+    return render(request,"case_edit.html")
+
+@csrf_exempt
+@login_required
+def deleteCase(request, cid):
+    """删除测试用例"""
+    case = TestCase.objects.get(id=cid)
+    case.delete()
+    return HttpResponseRedirect("/CaseManage/")
 
 @csrf_exempt
 @login_required
@@ -82,7 +117,7 @@ def assertFun(request):
                return JsonResponse({"result":"断言成功"})
            else:
                return JsonResponse({"result": "断言失败"})
-       if assert_type == "equals":
+       if assert_type == "equal":
            if assert_content.strip() == result.strip():
                return JsonResponse({"result":"断言成功"})
            else:
@@ -90,5 +125,65 @@ def assertFun(request):
 
     else:
         return JsonResponse({"result":"请求方法错误"})
-# Create your views here.
 
+
+@csrf_exempt
+@login_required
+def saveCase(request):
+    if request.method == "POST":
+
+        url = request.POST.get("url", "")
+        method = request.POST.get("method", "")
+        headers = request.POST.get("header", "")
+        parameter_type = request.POST.get("type", "")
+        parameter_data = request.POST.get("parameter", "")
+
+        assert_type = request.POST.get("assert_type", "")
+        assert_res = request.POST.get("assert_res", "")
+
+        name = request.POST.get("case_name", "")
+        module_id = request.POST.get("module_id", "")
+
+        if name == "":
+            return JsonResponse({"status":10101, "message":"用例名称不能为空"})
+        if assert_res == "":
+            return JsonResponse({"status":10102, "message":"断言内容不能为空"})
+        if module_id == "" or module_id == "0":
+            return JsonResponse({"status":10103, "message":"请选择模块"})
+
+        module = Module.objects.get(id=module_id)
+
+        TestCase.objects.create(name=name, url=url, method=method, headers=headers, parameter_type=parameter_type,
+                                parameter_data=parameter_data, assert_type=assert_type, assert_res=assert_res, module=module)
+        return JsonResponse({"status":10200, "message":"创建成功"})
+        # return HttpResponseRedirect("/CaseManage/")
+
+
+@csrf_exempt
+@login_required
+def getCaseInfo(request):
+    """获取用例详细数据"""
+    if request.method == "POST":
+        cid = request.POST.get("cid","")
+        case = TestCase.objects.get(id=cid)
+
+        mid = case.module_id
+        # print(mid)
+        # module = Module.objects.get(id=mid).name
+        pid = Module.objects.get(id=mid).project_id
+        # project = Project.objects.get(id=pid).name
+
+        case_dict = {
+            "id": case.id,
+            "url": case.url,
+            "name": case.name,
+            "method": case.method,
+            "headers": case.headers,
+            "parameter_type": case.parameter_type,
+            "parameter_data": case.parameter_data,
+            "assert_type": case.assert_type,
+            "assert_res": case.assert_res,
+            "project_id":pid,
+            "module_id":mid,
+        }
+        return JsonResponse({"status":10200,"message":"请求成功","data":case_dict})
