@@ -96,7 +96,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for case in testcases %}
+                    {% for case in contacts %}
                         <tr>
                           <td>{{case.id}}</td>
                           <td>{{case.name}}</td>
@@ -115,24 +115,24 @@
                 </table>
               </div>
 
-            <ul class="pagination" id="pager" style="padding-left: 1300px;">
+            <ul class="pagination" id="pager" style="padding-left: 1350px;">
 
                 {% if contacts.has_previous %}
-                    <li class="previous"><a href="/?page={{ contacts.previous_page_number }}">上一页</a></li>
+                    <li class="previous"><a href="/CaseManage/?page={{ contacts.previous_page_number }}">上一页</a></li>
                 {% else %}
                     <li class="previous disabled"><a href="#">&laquo;上一页</a></li>
                 {% endif %}
 
-                {% for num in paginator.page_range %}
-                    {% if num == currentPage %}
-                        <li class="item active"><a href="/?page={{ num }}">{{ num }}</a></li>
+                {% for num in contacts.paginator.page_range %}
+                    {% if num == contacts.number %}
+                        <li class="item active"><a href="/CaseManage/?page={{ num }}">{{ num }}</a></li>
                     {% else %}
-                        <li class="item"><a href="/?page={{ num }}">{{ num }}</a></li>
+                        <li class="item"><a href="/CaseManage/?page={{ num }}">{{ num }}</a></li>
                     {% endif %}
                 {% endfor %}
 
-                {% if book_list.has_next %}
-                    <li class="next"><a href="/?page={{ contacts.next_page_number }}">下一页&raquo;</a></li>
+                {% if contacts.has_next %}
+                    <li class="next"><a href="/CaseManage/?page={{ contacts.next_page_number }}">下一页&raquo;</a></li>
                 {% else %}
                     <li class="next disabled"><a href="#">下一页&raquo;</a></li>
                 {% endif %}

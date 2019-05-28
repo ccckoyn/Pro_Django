@@ -149,12 +149,7 @@ var TestCaseInit = function(cb){
 
         document.querySelector("#assert_content").value = resp.data.assert_res;
 
-        //ProjectInit("project_name");
 
-        // selectedProject(resp.data.project_id,function(){
-        //     ModuleInit("module_name",resp.data.project_id);
-        //     selectedModule(resp.data.project_id)
-        // })
         let project_options = document.querySelectorAll("#project_name > option");
         console.log(project_options.length)
         for(let i=0; i<project_options.length; i++){

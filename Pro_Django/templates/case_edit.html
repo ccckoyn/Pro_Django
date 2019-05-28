@@ -119,7 +119,7 @@
             <select class="selectpicker" id="module_name">
 
             </select>
-            <button id="save_btn" type="button" class="btn btn-warning" onclick="saveFunction()"  style="margin-left: 430px;">提交更新</button>
+            <button id="save_btn" type="button" class="btn btn-warning" onclick="updateFunction()" style="margin-left: 430px;">提交更新</button>
         </div>
 
 </div>
@@ -208,8 +208,11 @@
             });
     };
 
-    //保存用例
-    function saveFunction(){
+    //更新测试用例
+    function updateFunction(){
+
+        let case_url = document.location;
+        let cid = case_url.pathname.split("/")[3];
 
         //接口基本信息
         var url = $("#req_url").val();
@@ -256,10 +259,12 @@
                 //接口其他信息
                 case_name:case_name,
                 module_id:module_id,
+                cid:cid,
 
             },
             function (data) {
                 window.alert(data.message);
+                window.location.href = document.location.origin + '/CaseManage/';
             }
         );
     };

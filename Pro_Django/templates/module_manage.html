@@ -95,7 +95,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for module in modules %}
+                    {% for module in contacts %}
                         <tr>
                           <td>{{module.id}}</td>
                           <td>{{module.name}}</td>
@@ -117,21 +117,21 @@
             <ul class="pagination" id="pager" style="padding-left: 1300px;">
 
                 {% if contacts.has_previous %}
-                    <li class="previous"><a href="/?page={{ contacts.previous_page_number }}">上一页</a></li>
+                    <li class="previous"><a href="/MolManage/?page={{ contacts.previous_page_number }}">上一页</a></li>
                 {% else %}
                     <li class="previous disabled"><a href="#">&laquo;上一页</a></li>
                 {% endif %}
 
                 {% for num in paginator.page_range %}
                     {% if num == currentPage %}
-                        <li class="item active"><a href="/?page={{ num }}">{{ num }}</a></li>
+                        <li class="item active"><a href="/MolManage/?page={{ num }}">{{ num }}</a></li>
                     {% else %}
-                        <li class="item"><a href="/?page={{ num }}">{{ num }}</a></li>
+                        <li class="item"><a href="/MolManage/?page={{ num }}">{{ num }}</a></li>
                     {% endif %}
                 {% endfor %}
 
                 {% if book_list.has_next %}
-                    <li class="next"><a href="/?page={{ contacts.next_page_number }}">下一页&raquo;</a></li>
+                    <li class="next"><a href="/MolManage/?page={{ contacts.next_page_number }}">下一页&raquo;</a></li>
                 {% else %}
                     <li class="next disabled"><a href="#">下一页&raquo;</a></li>
                 {% endif %}

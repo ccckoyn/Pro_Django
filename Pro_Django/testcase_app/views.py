@@ -19,8 +19,16 @@ def CaseManage(request):
     # return render(request, "case_manage_postman.html", {"type": "debug"})
 
     case_all = TestCase.objects.all()
+    paginator = Paginator(case_all, 10)
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
 
-    return render(request, "case_manage.html",{"testcases":case_all})
+    return render(request, "case_manage.html", {"testcases": case_all, "contacts": contacts, "paginator": paginator})
 
 
 
@@ -130,6 +138,8 @@ def assertFun(request):
 @csrf_exempt
 @login_required
 def saveCase(request):
+
+
     if request.method == "POST":
 
         url = request.POST.get("url", "")
@@ -144,6 +154,9 @@ def saveCase(request):
         name = request.POST.get("case_name", "")
         module_id = request.POST.get("module_id", "")
 
+        cid = request.POST.get("cid", "")
+        # print("xxxxxxxxxxxxx",cid)
+
         if name == "":
             return JsonResponse({"status":10101, "message":"用例名称不能为空"})
         if assert_res == "":
@@ -153,10 +166,28 @@ def saveCase(request):
 
         module = Module.objects.get(id=module_id)
 
-        TestCase.objects.create(name=name, url=url, method=method, headers=headers, parameter_type=parameter_type,
-                                parameter_data=parameter_data, assert_type=assert_type, assert_res=assert_res, module=module)
-        return JsonResponse({"status":10200, "message":"创建成功"})
-        # return HttpResponseRedirect("/CaseManage/")
+        if cid == "":
+            TestCase.objects.create(name=name, url=url, method=method, headers=headers, parameter_type=parameter_type,
+                                    parameter_data=parameter_data, assert_type=assert_type, assert_res=assert_res, module=module)
+            return JsonResponse({"status": 10200, "message": "创建用例成功"})
+
+        else:
+            case = TestCase.objects.get(id=cid)
+            case.name = name
+            case.url = url
+            case.method = method
+            case.headers = headers
+            case.parameter_type = parameter_type
+            case.parameter_data = parameter_data
+            case.assert_type = assert_type
+            case.assert_res = assert_res
+            case.module = module
+            case.save()
+            return JsonResponse({"status":10200, "message":"更新用例成功"})
+
+    else:
+        return JsonResponse({"status": 10100, "message": "请求方式错误"})
+
 
 
 @csrf_exempt
