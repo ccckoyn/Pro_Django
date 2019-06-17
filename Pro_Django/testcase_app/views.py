@@ -19,7 +19,7 @@ def CaseManage(request):
     # return render(request, "case_manage_postman.html", {"type": "debug"})
 
     case_all = TestCase.objects.all()
-    paginator = Paginator(case_all, 10)
+    paginator = Paginator(case_all, 4)
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -59,14 +59,17 @@ def deleteCase(request, cid):
 @csrf_exempt
 @login_required
 def debugFun(request):
+
     if request.method == "POST":
-        del_parameter = ""
-        del_headers = ""
+        # del_parameter = ""
+        # del_headers = ""
         url = request.POST.get("url")
         method = request.POST.get("method")
-        headers = request.POST.get("headers","")
+        headers = request.POST.get("header","")
         req_type = request.POST.get("type")
         parameter = request.POST.get("parameter","")
+
+        print("------------>",headers)
 
         #处理parameter
         if parameter != "":

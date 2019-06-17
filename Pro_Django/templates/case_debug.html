@@ -141,7 +141,7 @@
     function sendFunction(){
         var url = $("#req_url").val();
         var method = $("#AreaId").val();
-        var header = $("#header").val();
+        var headers = $("#headers").val();
         var type = $('input[name="par_type"]:checked').val();
         var parameter = $("#parameter").val();
         if(url == ""){
@@ -152,7 +152,7 @@
             {
                 url:url,
                 method:method,
-                header:header,
+                header:headers,
                 type:type,
                 parameter:parameter,
             },

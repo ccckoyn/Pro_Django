@@ -1,0 +1,85 @@
+{% extends 'task_manage.html' %}
+{% block taskcreate %}
+
+    <h4 class="sub-header">创建任务</h4>
+    <div class="input-group">
+      <p> 任务名称：</p>
+      <input type="text" id="task_name" class="form-control" aria-describedby="basic-addon1" style="width: 1226px;">
+    </div>
+
+    <div style="margin-top: 10px;">
+    <p>任务描述：</p>
+
+        <textarea id="task_desc" class="form-control" rows="3" name=textarea style="width: 1226px;"></textarea>
+    </div>
+
+    <div style="margin-top: 10px;">
+        <p>测试用例：</p>
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+
+    <div style="margin-left: 1170px;margin-top: 20px;">
+			<button type="button" class="btn btn-primary" onclick="saveFun()">保存</button>
+    </div>
+
+
+
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<link href="http://cdn.bootcss.com/zTree.v3/3.5.23/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<script src="http://cdn.bootcss.com/zTree.v3/3.5.23/js/jquery.ztree.all.js"></script>
+
+
+<script type="text/javascript">
+
+
+    caseTreeInit()
+
+    function saveFun(){
+		//window.alert("点击了保存");
+
+        //接口的基本信息
+        var task_name = $("#task_name").val();
+        var task_desc = $("#task_desc").val();
+
+        if(task_name == ""){
+            window.alert("任务名称不能为空");
+        }
+
+        var cases_list = new Array();
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+		var nodes = treeObj.getCheckedNodes(true);
+		//console.log(nodes);
+
+        for(let i=0; i<nodes.length; i++){
+            //console.log("选中的节点:" + nodes[i].name);
+            if(nodes[i].isParent == false){
+                //console.log("选中的用例的id--->"+nodes[i].id,nodes[i].name);
+                cases_list.push(nodes[i].id);
+            }
+        }
+
+        // console.log("用例列表"+cases_list);
+        //将列表转为字符串
+        casesStr = JSON.stringify(cases_list);
+
+        $.post("/TaskManage/saveTask/",{
+            task_id: 0,
+            task_name: task_name,
+            task_desc: task_desc,
+            cases: casesStr
+        },function(resp){
+            if(resp.status == 10020){
+                window.alert("创建任务成功");
+                window.location.href = document.location.origin + '/TaskManage/';
+            }
+        })
+	}
+
+
+
+</script>
+{% endblock %}
+

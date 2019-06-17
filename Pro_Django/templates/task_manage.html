@@ -1,4 +1,4 @@
-{% extends 'test_platform/base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -15,7 +15,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">设置</a></li>
-            <li><a href="/test_platform/logout/">退出</a></li>
+            <li><a href="/logout/">退出</a></li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -28,86 +28,117 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar" style="width: 261px;">
           <ul class="nav nav-sidebar">
-            <li ><a href="/test_platform/ProManage">
+            <li><a href="/ProManage/">
                 <i class="glyphicon glyphicon-th-large"></i>&nbsp&nbsp项目管理</a></li>
-            <li><a href="/test_platform/MolManage">
+
+            <li><a href="/MolManage/">
                 <i class="glyphicon glyphicon-th"></i>&nbsp&nbsp模块管理</a></li>
-            <li><a href="/test_platform/CaseManage">
-                <i class="glyphicon glyphicon-list"></i>&nbsp&nbsp用例管理</a></li>
-            <li class="active"><a href="/test_platform/TaskManage">
+
+            <li><a href="/CaseManage/">
+                <i class="glyphicon glyphicon-list"></i>&nbsp&nbsp用例管理</a>
+
+            </li>
+
+            <li class="active" ><a href="/TaskManage/">
                 <i class="glyphicon glyphicon-tasks"></i>&nbsp&nbsp任务管理</a></li>
-            <li><a href="/test_platform/MockServer">
+
+            <li><a href="/MockServer/">
                 <i class="glyphicon glyphicon-modal-window"></i>&nbsp&nbspMock Server</a></li>
-            <li><a href="/test_platform/TestTool">
+
+            <li><a href="/TestTool/">
                 <i class="glyphicon glyphicon-wrench"></i>&nbsp&nbsp测试工具</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 1650px; margin-left: 280px;">
-{#          <h1 class="page-header">Dashboard</h1>#}
-{##}
-{#          <div class="row placeholders">#}
-{#            <div class="col-xs-6 col-sm-3 placeholder">#}
-{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
-{#              <h4>Label</h4>#}
-{#              <span class="text-muted">Something else</span>#}
-{#            </div>#}
-{#            <div class="col-xs-6 col-sm-3 placeholder">#}
-{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
-{#              <h4>Label</h4>#}
-{#              <span class="text-muted">Something else</span>#}
-{#            </div>#}
-{#            <div class="col-xs-6 col-sm-3 placeholder">#}
-{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
-{#              <h4>Label</h4>#}
-{#              <span class="text-muted">Something else</span>#}
-{#            </div>#}
-{#            <div class="col-xs-6 col-sm-3 placeholder">#}
-{#              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">#}
-{#              <h4>Label</h4>#}
-{#              <span class="text-muted">Something else</span>#}
-{#            </div>#}
-{#          </div>#}
 
-          <h4 class="sub-header">任务管理</h4>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <!--任务列表-->
+            {% if type == "list" %}
+              <h4 class="sub-header">任务列表
+                  <a href="/TaskManage/createTask/">
+                      <button type="button" class="btn btn-sm btn-primary"  style="float:right;">
+                      <i class="glyphicon glyphicon-plus"></i>&nbsp&nbsp创建任务 </button></a>
+              </h4>
+              <div class="table-responsive">
+                <table class="table table-striped">
+
+                  <thead>
+                    <tr>
+                      <th>序号</th>
+                      <th>任务名称</th>
+                      <th>任务状态</th>
+                      <th>创建时间</th>
+
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for task in tasks %}
+                        <tr>
+                          <td>{{task.id}}</td>
+                          <td>{{task.name}}</td>
+                          <td>{{task.status}}</td>
+                          <td>{{task.create_time|date:"Y-m-d H:i:s"}}</td>
+                          <td>
+                              <a href="/TaskManage/editTask/{{task.id}}/">
+                                  <i class="glyphicon glyphicon-edit"></i>&nbsp编辑</a>
+                              <a href="/TaskManage/deleteTask/{{task.id}}/" style="padding-left: 10px;">
+                                  <i class="glyphicon glyphicon-trash"></i>&nbsp删除</a>
+                          </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              <ul class="pagination" id="pager" style="padding-left: 1200px;">
+
+                {% if contacts.has_previous %}
+                    <li class="previous"><a href="/CaseManage/?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                    <li class="previous disabled"><a href="#">&laquo;</a></li>
+                {% endif %}
+
+                {% for num in contacts.paginator.page_range %}
+                    {% if num == contacts.number %}
+                        <li class="item active"><a href="/CaseManage/?page={{ num }}">{{ num }}</a></li>
+                    {% else %}
+                        <li class="item"><a href="/CaseManage/?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if contacts.has_next %}
+                    <li class="next"><a href="/CaseManage/?page={{ contacts.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class="next disabled"><a href="#">&raquo;</a></li>
+                {% endif %}
+            </ul>
+
+            {% endif %}
+
+
+            {% if type == "create" %}
+
+                {% block taskcreate %}
+
+
+                {% endblock %}
+
+            {% endif %}
+
+            {% if type == "edit" %}
+
+                {% block taskedit %}
+
+
+                {% endblock %}
+
+            {% endif %}
         </div>
+
       </div>
     </div>
+
+
 
 {% endblock %}
 

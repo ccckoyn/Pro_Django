@@ -36,5 +36,8 @@ urlpatterns = [
     #用例管理
     path('CaseManage/',include("testcase_app.urls")),
 
+    #任务管理
+    path('TaskManage/',include("testtask_app.urls")),
+
 
 ]

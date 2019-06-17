@@ -90,8 +90,9 @@
                       <th>用例名称</th>
                       <th>请求方式</th>
                       <th>所属模块</th>
+                      <th>项目</th>
                       <th>创建时间</th>
-                      <!--<th>更新时间</th>-->
+
                       <th>操作</th>
                     </tr>
                   </thead>
@@ -102,6 +103,7 @@
                           <td>{{case.name}}</td>
                           <td>{{case.method}}</td>
                           <td>{{case.module}}</td>
+                          <td>{{case.module.project}}</td>
                           <td>{{case.create_time|date:"Y-m-d H:i:s"}}</td>
                           <td>
                               <a href="/CaseManage/editCase/{{case.id}}/">
@@ -115,12 +117,12 @@
                 </table>
               </div>
 
-            <ul class="pagination" id="pager" style="padding-left: 1350px;">
+            <ul class="pagination" id="pager" style="padding-left: 1200px;">
 
                 {% if contacts.has_previous %}
-                    <li class="previous"><a href="/CaseManage/?page={{ contacts.previous_page_number }}">上一页</a></li>
+                    <li class="previous"><a href="/CaseManage/?page={{ contacts.previous_page_number }}">&laquo;</a></li>
                 {% else %}
-                    <li class="previous disabled"><a href="#">&laquo;上一页</a></li>
+                    <li class="previous disabled"><a href="#">&laquo;</a></li>
                 {% endif %}
 
                 {% for num in contacts.paginator.page_range %}
@@ -132,9 +134,9 @@
                 {% endfor %}
 
                 {% if contacts.has_next %}
-                    <li class="next"><a href="/CaseManage/?page={{ contacts.next_page_number }}">下一页&raquo;</a></li>
+                    <li class="next"><a href="/CaseManage/?page={{ contacts.next_page_number }}">&raquo;</a></li>
                 {% else %}
-                    <li class="next disabled"><a href="#">下一页&raquo;</a></li>
+                    <li class="next disabled"><a href="#">&raquo;</a></li>
                 {% endif %}
             </ul>
 
