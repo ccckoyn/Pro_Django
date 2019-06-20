@@ -11,7 +11,7 @@ urlpatterns = [
     path('saveTask/', views.saveTask, name="saveTask"),
     path('editTask/<int:tid>/', views.editTask, name="editTask"),
     path('deleteTask/<int:tid>/', views.deleteTask, name="deleteTask"),
-    # path('editProject/<int:pid>/', views.editProject, name="editProject"),
+    path('runTask/', views.runTask, name="runTask"),
     # path('deleteProject/<int:pid>/', views.deleteProject, name="deleteProject"),
     # path('getProjectList/', views.getProjectList, name="getProjectList"),
 

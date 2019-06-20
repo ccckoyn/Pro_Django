@@ -10,7 +10,7 @@ from testcase_app.models import TestCase
 from module_app.models import Module
 from project_app.models import Project
 from testtask_app.models import TestTask
-import requests,json
+import requests,json,os
 
 @login_required
 @csrf_exempt
@@ -41,12 +41,48 @@ def editTask(request, tid):
 @csrf_exempt
 def deleteTask(request, tid):
 
-    """跳转到编辑页面"""
+    """删除任务"""
 
     task = TestTask.objects.get(id=tid)
     task.delete()
 
     return HttpResponseRedirect("/TaskManage/")
+
+@login_required
+@csrf_exempt
+def runTask(request):
+    """运行任务"""
+    if request.method == "POST":
+        tid = request.POST.get("task_id","")
+        if tid == "":
+            return JsonResponse({"status": 10102, "message": "测试任务ID不能为空"})
+        task = TestTask.objects.get(id=tid)
+        case_list = json.loads(task.cases)
+
+        test_data = {}
+        for case_id in case_list:
+            case = TestCase.objects.get(id=case_id)
+            test_data[case_id] = {
+                "url": case.url,
+                "method": case.method,
+                "headers": case.headers,
+                "parameter_type": case.parameter_type,
+                "parameter_data": case.parameter_data,
+                "assert_type": case.assert_type,
+                "assert_res": case.assert_res
+            }
+
+        str_case_list = json.dumps(test_data)
+
+        data_file_name = "./testtask_app/extend/test_data_list.json"
+        with open(data_file_name,"w",encoding="utf-8") as f:
+            f.write(str_case_list)
+
+        os.system(" pytest -vs ./testtask_app/extend/run_task.py  --junitxml=./testtask_app/extend/log.xml")
+
+        return JsonResponse({"status": 10200, "message": "测试任务运行完成"})
+
+    return JsonResponse({"status": 10100, "message": "请求方法错误"})
 
 @login_required
 @csrf_exempt
